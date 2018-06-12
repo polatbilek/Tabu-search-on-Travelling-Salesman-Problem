@@ -2,7 +2,7 @@
 """
 Created on Tue May  8 15:55:33 2018
 
-@author: polat
+@author: polatbilek
 """
 import math
 from random import randint
@@ -42,10 +42,10 @@ def read_data(path):
     return links, max_weight
 
 def getNeighbors(state):
-    #return one_swap_neighbors(state)
+    #return hill_climbing(state)
     return two_opt_swap(state)
         
-def one_swap_neighbors(state):
+def hill_climbing(state):
     node = randint(1, len(state)-1)
     neighbors = []
     
@@ -88,7 +88,6 @@ def fitness(route, graph):
     
     for i in range(len(route)):
         if(i+1 != len(route)):
-            #path_length = path_length + euclidean_distance(route[i], route[i+1])
             dist = weight_distance(route[i], route[i+1], graph)
             if dist != -1:
                 path_length = path_length + dist
@@ -96,7 +95,6 @@ def fitness(route, graph):
                 return max_fitness # there is no  such path
                 
         else:
-            #path_length = path_length + euclidean_distance(route[i], route[0])
             dist = weight_distance(route[i], route[0], graph)
             if dist != -1:
                 path_length = path_length + dist
@@ -105,9 +103,9 @@ def fitness(route, graph):
             
     return path_length
             
-
-def euclidean_distance(city1, city2):    
-    return math.sqrt(((city1[0] - city2[0])*(city1[0] - city2[0])) + ((city1[1] - city2[1])*(city1[1] - city2[1])))
+# not used in this code but some datasets has 2-or-more dimensional data points, in this case it is usable
+def euclidean_distance(city1, city2):
+    return math.sqrt((city1[0] - city2[0])**2 + ((city1[1] - city2[1])**2))
 
 def weight_distance(city1, city2, graph):
     global max_fitness
@@ -118,7 +116,7 @@ def weight_distance(city1, city2, graph):
         if neighbor[0] == int(city2):
             return neighbor[1]
         
-    return -1 #there can't be - distance, so -1 means there is not any city found in graph or there is not an such edge
+    return -1 #there can't be minus distance, so -1 means there is not any city found in graph or there is not such edge
 
 
 def tabu_search(input_file_path):
@@ -152,8 +150,7 @@ def tabu_search(input_file_path):
         sNeighborhood = getNeighbors(bestCandidate)
         bestCandidate = sNeighborhood[0]
         for sCandidate in sNeighborhood:
-            #if (sCandidate not in tabuList) and ((fitness(sCandidate, graph) < fitness(bestCandidate, graph))):
-            if ((fitness(sCandidate, graph) < fitness(bestCandidate, graph))):
+            if (sCandidate not in tabuList) and ((fitness(sCandidate, graph) < fitness(bestCandidate, graph))):
                 bestCandidate = sCandidate
 
         if (fitness(bestCandidate, graph) < fitness(sBest, graph)):
