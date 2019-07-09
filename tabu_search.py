@@ -183,7 +183,7 @@ neighborhood_size = 500
 stoppingTurn = 500
 max_fitness = 0
 start_node = 0
-solution, value, exec_time = tabu_search("C:\\Users\\polat\\Dropbox\\okul belgeleri\\5.2\\CENG504 Optimization Methods\\proje\\kodlar\\test.txt")
+solution, value, exec_time = tabu_search("\path\to\your\folder\test.txt")
 
 print(solution)
 print(value)
